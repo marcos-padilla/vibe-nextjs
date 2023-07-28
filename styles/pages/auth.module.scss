@@ -1,0 +1,63 @@
+.auth_container {
+	height: 100%;
+	display: grid;
+	place-items: center;
+	.console {
+		width: 80%;
+
+		display: flex;
+		flex-direction: column;
+		.bar {
+			overflow: hidden;
+			height: 15px;
+			background: linear-gradient(
+				rgb(215, 205, 208),
+				rgb(213, 213, 213)
+			);
+			border-top-left-radius: 3px;
+			border-top-right-radius: 3px;
+			display: flex;
+			align-items: center;
+			.actions {
+				padding-left: 0.5rem;
+				display: flex;
+				gap: 0.5rem;
+				span {
+					width: 10px;
+					height: 10px;
+					border-radius: 50%;
+					&:nth-child(1) {
+						background-color: rgb(231, 83, 83);
+					}
+					&:nth-child(2) {
+						background-color: rgb(240, 195, 66);
+					}
+					&:nth-child(3) {
+						background-color: rgb(56, 207, 77);
+					}
+				}
+			}
+			.title {
+				color: black;
+				font-size: 0.8rem;
+				font-weight: normal;
+				display: flex;
+				align-items: center;
+				width: 100%;
+				justify-content: center;
+				gap: 0.2rem;
+			}
+		}
+
+		.content {
+			background-color: rgb(23, 23, 23);
+			color: rgb(99, 184, 93);
+			font-weight: bold;
+			padding: 0.5rem;
+			height: 300px;
+			overflow-y: auto;
+			line-height: 1.1;
+			font-size: 0.8rem;
+		}
+	}
+}

@@ -1,0 +1,10 @@
+p.text {
+	display: flex;
+	align-items: center;
+	span.caret {
+		height: 90%;
+		width: 20px;
+		background-color: red;
+		border-right: 1rem solid blue;
+	}
+}

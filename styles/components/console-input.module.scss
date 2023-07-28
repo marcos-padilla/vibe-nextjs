@@ -1,0 +1,13 @@
+.console_input_container {
+	display: flex;
+	gap: 0.2rem;
+	align-items: center;
+	margin: 0.1rem 0;
+	input {
+		background: transparent;
+		outline: none;
+		width: 100%;
+	}
+	span {
+	}
+}
