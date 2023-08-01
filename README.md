@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# VIBE: Developer Social Network
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Vibe is a platform designed for programmers to connect, collaborate, and share their coding knowledge with fellow developers. It provides a space for programmers to interact, discuss coding challenges, showcase their projects, and build a strong community of like-minded individuals. The project is built with a combination of cutting-edge technologies, with Next.js serving as the primary framework.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-    **Next.js:** Next.js is the core technology behind the platform, providing a fast and efficient server-side rendering environment for building modern web applications.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-    **Prisma:** Prisma is used as the database toolkit and ORM (Object-Relational Mapping) to manage the application's database interactions.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+-    **extAuth.js:** NextAuth.js is implemented for authentication and user management, ensuring secure access to the social network.
 
-## Learn More
+-    **Sass:** Sass is used to enhance the CSS workflow, allowing for more organized and maintainable styling.
 
-To learn more about Next.js, take a look at the following resources:
+-    **Tailwind CSS:** Tailwind CSS is utilized for a utility-first approach to styling, making it easier to create responsive and visually appealing components.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. User Registration and Authentication: Developers can create accounts and log in securely using NextAuth.js.
 
-## Deploy on Vercel
+2. Profile Creation: Users can set up their profiles with information about their skills, projects, and social links.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Post Sharing: Developers can share posts containing code snippets, projects, or programming tips.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+4. Follow and Connect: Users can follow other developers, build connections, and interact through comments and likes.
+
+5. Real-time Notifications: Users receive instant notifications for new followers, likes, and comments.
+
+## Contribution Guidelines
+
+We welcome contributions to enhance the platform and encourage active participation from the developer community. To contribute, follow these guidelines:
+
+1. Fork the repository.
+
+2. Create a new branch for your feature or bug fix.
+
+3. Commit your changes and push the branch to your fork.
+
+4. Submit a pull request with a detailed description of your changes.
+
+5. Ensure your code passes the CI/CD checks.
+
+## License
+
+Developer Social Network is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+## Contact
+
+If you have any questions or suggestions regarding the project, feel free to reach out to our team at developersocial@example.com.
+
+---
