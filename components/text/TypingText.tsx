@@ -7,12 +7,14 @@ interface TypingTextProps {
 	text: string
 	textStyles?: string
 	delay?: number
+	speed?: number
 }
 
 export default function TypingText({
 	text,
 	textStyles,
 	delay = 0,
+	speed = 40,
 }: TypingTextProps) {
 	const [displayText, setDisplayText] = useState('')
 	const [animate, setAnimate] = useState(false)
@@ -24,7 +26,7 @@ export default function TypingText({
 				setDisplayText(text.substring(0, currentIndex))
 				animationTimeout = setTimeout(
 					() => animateText(currentIndex + 1),
-					40
+					speed
 				)
 			} else {
 				setAnimate(false)

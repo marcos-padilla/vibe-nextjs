@@ -4,9 +4,10 @@ import styles from '@/styles/pages/auth.module.scss'
 import appLogo from '@/public/app-logo/logo.png'
 import Image from 'next/image'
 import ConsoleInput from '@/components/ConsoleInput'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import TypingText from '@/components/text/TypingText'
 import { useRouter } from 'next/navigation'
+
 interface ConsoleInputInterface {
 	value: string
 	active: boolean
@@ -15,7 +16,7 @@ interface ConsoleInputInterface {
 
 interface ConsoleTextInterface {
 	text: string
-	error?: boolean
+	type: 'error' | 'input'
 }
 
 const texts = [
@@ -25,11 +26,22 @@ const texts = [
 ]
 
 export default function AuthPage() {
-	const [errorsText, setErrorsText] = useState<string[]>([])
+	const [consoleTexts, setConsoleTexts] = useState<ConsoleTextInterface[]>(
+		[]
+	)
+
 	const router = useRouter()
+	const consoleInputRef = useRef<HTMLInputElement>(null)
+
 	const appendError = (error: string) => {
-		setErrorsText((prev) => {
-			return [...prev, error]
+		setConsoleTexts((prev) => {
+			return [...prev, { text: error, type: 'error' }]
+		})
+	}
+
+	const appendUserInput = (input: string) => {
+		setConsoleTexts((prev) => {
+			return [...prev, { text: input, type: 'input' }]
 		})
 	}
 
@@ -88,7 +100,12 @@ export default function AuthPage() {
 			}
 			setInputs(updatedInputs)
 		} else {
-			appendError(parsedInput.message!)
+			appendUserInput(inputs[index].value)
+			if (inputs[index].value) {
+				appendError(parsedInput.message!)
+			}
+			updatedInputs[index].value = ''
+			setInputs(updatedInputs)
 		}
 	}
 
@@ -111,7 +128,12 @@ export default function AuthPage() {
 						<span>Vibe -- Sign In/Sign Up</span>
 					</div>
 				</div>
-				<div className={styles.content}>
+				<div
+					className={styles.content}
+					onClick={() => {
+						consoleInputRef.current?.focus()
+					}}
+				>
 					{texts.map((text, index) => {
 						const currentDelay = text.length * 50
 						prevDelay += currentDelay
@@ -122,17 +144,26 @@ export default function AuthPage() {
 							/>
 						)
 					})}
-					{errorsText.map((error, index) => (
-						<p key={index} className='text-red-700'>
-							{error}
-						</p>
-					))}
+					{consoleTexts.map((text, index) => {
+						if (text.type === 'error') {
+							return (
+								<TypingText
+									text={text.text}
+									textStyles='text-red-700'
+									speed={10}
+								/>
+							)
+						} else {
+							return <p>{`> ${text.text}`}</p>
+						}
+					})}
 					{inputs.map((input, index) => (
 						<ConsoleInput
 							value={input.value}
 							setValue={(e) => handleChange(index, e)}
 							isActive={input.active}
 							dissable={() => handleDissable(index)}
+							inputRef={consoleInputRef}
 						/>
 					))}
 				</div>
