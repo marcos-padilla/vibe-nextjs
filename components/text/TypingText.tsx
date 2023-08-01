@@ -14,7 +14,7 @@ export default function TypingText({
 	text,
 	textStyles,
 	delay = 0,
-	speed = 40,
+	speed = 25,
 }: TypingTextProps) {
 	const [displayText, setDisplayText] = useState('')
 	const [animate, setAnimate] = useState(false)

@@ -7,7 +7,7 @@ interface ConsoleInputProps {
 	value: string
 	setValue: (value: any) => void
 	isActive: boolean
-	dissable: () => void
+	submit: () => void
 	inputRef: RefObject<HTMLInputElement>
 }
 
@@ -15,7 +15,7 @@ export default function ConsoleInput({
 	value,
 	setValue,
 	isActive,
-	dissable,
+	submit,
 	inputRef,
 }: ConsoleInputProps) {
 	return (
@@ -27,7 +27,7 @@ export default function ConsoleInput({
 					autoFocus
 					onKeyUp={(e) => {
 						if (e.code == 'Enter') {
-							dissable()
+							submit()
 						}
 					}}
 					value={value}

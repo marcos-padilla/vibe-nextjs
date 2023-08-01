@@ -11,13 +11,16 @@ import { useRouter } from 'next/navigation'
 interface ConsoleInputInterface {
 	value: string
 	active: boolean
-	parseInput: () => { message?: string; success: boolean }
 }
+
+type ConsoleTextType = 'error' | 'input' | 'response'
 
 interface ConsoleTextInterface {
 	text: string
-	type: 'error' | 'input'
+	type: ConsoleTextType
 }
+
+type Command = 'credentials' | 'google' | 'github' | 'clear' | 'cls' | 'help'
 
 const texts = [
 	'Welcome to Vibe, the social network for programmers',
@@ -33,79 +36,76 @@ export default function AuthPage() {
 	const router = useRouter()
 	const consoleInputRef = useRef<HTMLInputElement>(null)
 
-	const appendError = (error: string) => {
+	const appendConsole = (text: string, type: ConsoleTextType) => {
 		setConsoleTexts((prev) => {
-			return [...prev, { text: error, type: 'error' }]
+			return [...prev, { text, type }]
 		})
 	}
 
-	const appendUserInput = (input: string) => {
-		setConsoleTexts((prev) => {
-			return [...prev, { text: input, type: 'input' }]
-		})
+	const appendError = (error: string) => appendConsole(error, 'error')
+	const appendUserInput = () => appendConsole(input.value, 'input')
+	const appendResponse = (response: string) =>
+		appendConsole(response, 'response')
+
+	const clearInput = () => setInput({ active: true, value: '' })
+
+	const parseInput = (value: string) => {
+		switch (value) {
+			case 'cls':
+			case 'clear':
+				setConsoleTexts([])
+				clearInput()
+				break
+			case 'help':
+				appendUserInput()
+				appendResponse(
+					`
+					Avaliable commands:
+					credentials ----------- Use your own credentials for sign in or sign up
+					github ---------------- Use your github account for sign in or sign up
+					google ---------------- Use your google account for sign in or sign up
+					help ------------------ Show this message
+					cls, clear -------------- Clear the console
+					`
+				)
+				clearInput()
+				break
+			case 'google':
+				break
+			case 'github':
+				break
+			case 'credentials':
+				router.push('/auth/credentials')
+				break
+			default:
+				appendUserInput()
+				appendError(
+					'Undefined command, type help for see the full list of commands'
+				)
+				clearInput()
+		}
 	}
+
+	const [input, setInput] = useState<ConsoleInputInterface>({
+		value: '',
+		active: true,
+	})
 
 	let prevDelay = 0
-	const [inputs, setInputs] = useState<ConsoleInputInterface[]>([
-		{
-			value: '',
-			active: true,
-			parseInput: function () {
-				if (
-					this.value !== 'google' &&
-					this.value !== 'github' &&
-					this.value !== 'credentials'
-				) {
-					return {
-						message: 'Undefined command, type google, github or credentials',
-						success: false,
-					}
-				} else {
-					setInputs((prev) => {
-						return [...prev]
-					})
-					if (this.value === 'credentials') {
-						router.push('/auth/credentials')
-					}
-					return {
-						success: true,
-					}
-				}
-			},
-		},
-	])
-	const handleChange = (
-		index: number,
-		event: ChangeEvent<HTMLInputElement>
-	) => {
-		const updatedInputs = [...inputs]
-		if (updatedInputs[index].active) {
-			updatedInputs[index] = {
-				...updatedInputs[index],
-				value: event.target.value,
-			}
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (input.active) {
+			setInput({ active: true, value: event.target.value })
 		}
-		setInputs(updatedInputs)
 	}
 
-	const handleDissable = (index: number) => {
-		const updatedInputs = [...inputs]
-		const parsedInput = updatedInputs[index].parseInput()
-		if (parsedInput.success) {
-			if (updatedInputs[index].active) {
-				updatedInputs[index] = {
-					...updatedInputs[index],
-					active: false,
-				}
-			}
-			setInputs(updatedInputs)
-		} else {
-			appendUserInput(inputs[index].value)
-			if (inputs[index].value) {
-				appendError(parsedInput.message!)
-			}
-			updatedInputs[index].value = ''
-			setInputs(updatedInputs)
+	const dissableInput = () =>
+		setInput((prev) => {
+			return { ...prev, active: false }
+		})
+
+	const handleSubmit = () => {
+		if (input.active) {
+			parseInput(input.value)
 		}
 	}
 
@@ -135,7 +135,7 @@ export default function AuthPage() {
 					}}
 				>
 					{texts.map((text, index) => {
-						const currentDelay = text.length * 50
+						const currentDelay = text.length * 25
 						prevDelay += currentDelay
 						return (
 							<TypingText
@@ -153,19 +153,32 @@ export default function AuthPage() {
 									speed={10}
 								/>
 							)
+						}
+						if (text.type === 'response') {
+							const lines = text.text
+								.replaceAll('\t', '')
+								.split('\n')
+							return lines
+								.filter((line) => line.length > 0)
+								.map((line) => {
+									return (
+										<TypingText
+											text={line}
+											speed={10}
+										/>
+									)
+								})
 						} else {
 							return <p>{`> ${text.text}`}</p>
 						}
 					})}
-					{inputs.map((input, index) => (
-						<ConsoleInput
-							value={input.value}
-							setValue={(e) => handleChange(index, e)}
-							isActive={input.active}
-							dissable={() => handleDissable(index)}
-							inputRef={consoleInputRef}
-						/>
-					))}
+					<ConsoleInput
+						value={input.value}
+						setValue={(e) => handleChange(e)}
+						isActive={input.active}
+						submit={handleSubmit}
+						inputRef={consoleInputRef}
+					/>
 				</div>
 			</div>
 		</section>
